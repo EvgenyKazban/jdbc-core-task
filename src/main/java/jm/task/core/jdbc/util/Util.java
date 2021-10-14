@@ -3,17 +3,23 @@ package jm.task.core.jdbc.util;
 import java.sql.Connection;
 
 public class Util {
-    private static Util instance;
+    private static volatile Util instance;
 
     private Util() {
 
     }
 
     public static Util getInstance() {
-        if(instance == null) {
-            instance = new Util();
+        Util localInstance = instance;
+        if (localInstance == null) {
+            synchronized (Util.class) {
+                localInstance = instance;
+                if (localInstance == null) {
+                    instance = localInstance = new Util();
+                }
+            }
         }
-        return instance;
+        return localInstance;
     }
 
     public Connection getConnection() {
