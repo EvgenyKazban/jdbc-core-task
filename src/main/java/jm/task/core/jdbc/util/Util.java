@@ -1,9 +1,17 @@
 package jm.task.core.jdbc.util;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public class Util {
     private static volatile Util instance;
+
+    private static final String URL = "jdbc:mysql://localhost/task";
+    private static final String USER = "root";
+    private static final String PASSWORD = "root";
+
+
 
     private Util() {
 
@@ -22,7 +30,7 @@ public class Util {
         return localInstance;
     }
 
-    public Connection getConnection() {
-        return CustomConnectionPool.getInstance().getConnection();
+    public static Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(URL, USER, PASSWORD);
     }
 }
